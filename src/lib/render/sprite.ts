@@ -36,7 +36,8 @@ export function velocityToDirection(vx: number, vy: number): number {
   const deg = ((angle * 180) / Math.PI + 360 + 90) % 360;
   const sector = Math.round(deg / 45) % 8;
 
-  const sectorToRow = [0, 7, 6, 5, 4, 3, 2, 1];
+  //                    up upR  R  dnR dn dnL  L  upL
+  const sectorToRow = [4,  3,  2,  1,  0,  7,  6,  5];
   return sectorToRow[sector];
 }
 
