@@ -29,7 +29,7 @@ export default function IntroPage() {
       {/* Background image */}
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url('/assets/images/introBG2.png')" }}
+        style={{ backgroundImage: "url('/assets/images/introBG2.webp')" }}
       />
 
       {/* Gradient overlay for readability */}

@@ -8,7 +8,7 @@ export const ASSETS = {
   framePinkGreen: "/assets/frames/Floral Flourish - PinkGreen.png",
   valentineIcons: "/assets/love/ValentineIcons.png",
   foodIcons: "/assets/food/free 18 icons.png",
-  introBg: "/assets/images/introBG2.png",
+  introBg: "/assets/images/introBG2.webp",
   chest: "/assets/newtiles/Object Animation/Chest.png",
 
   tileset: {
@@ -44,10 +44,10 @@ export const ASSETS = {
   },
 
   photos: {
-    eat_shawarma: "/assets/images/firstEat.png",
-    first_kiss: "/assets/images/firstKiss.png",
-    visited_tetouan: "/assets/images/firstVisit.png",
-    first_sleep_rabat: "/assets/images/firstSleep.png",
+    eat_shawarma: "/assets/images/firstEat.webp",
+    first_kiss: "/assets/images/firstKiss.webp",
+    visited_tetouan: "/assets/images/firstVisit.webp",
+    first_sleep_rabat: "/assets/images/firstSleep.webp",
   },
 
   keys: "/assets/keys/UI_buttons16x16.png",
