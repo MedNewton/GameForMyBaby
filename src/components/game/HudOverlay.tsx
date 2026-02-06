@@ -53,29 +53,29 @@ export default function HudOverlay() {
 
   return (
     <>
-      {/* ── Desktop timer (large, centered) ── */}
-      <div className="fixed top-3 left-1/2 -translate-x-1/2 z-30 pointer-events-none hidden md:block">
+      {/* ── Timer — top center on both mobile & desktop ── */}
+      <div className="fixed top-2 md:top-3 left-1/2 -translate-x-1/2 z-30 pointer-events-none">
         <div
-          className={`bg-black/80 rounded-xl px-6 py-3 backdrop-blur-sm border-2 ${
+          className={`bg-black/80 rounded-xl px-4 md:px-6 py-2 md:py-3 backdrop-blur-sm border-2 ${
             isUrgent ? "animate-pulse border-red-500" : "border-white/20"
           }`}
         >
-          <div className="flex items-center gap-3">
-            <span className="font-pixel text-white/60 text-sm">TIME</span>
+          <div className="flex items-center gap-2 md:gap-3">
+            <span className="font-pixel text-white/60 text-[10px] md:text-sm">TIME</span>
             <span
-              className="font-pixel text-4xl tabular-nums"
+              className="font-pixel text-3xl md:text-4xl tabular-nums"
               style={{ color: timerColor, textShadow: `0 0 10px ${timerColor}40` }}
             >
               {formatGameTime(gameTime)}
             </span>
-            <span className="font-pixel text-white/40 text-sm">/ 21:00</span>
+            <span className="font-pixel text-white/40 text-[10px] md:text-sm">/ 21:00</span>
           </div>
         </div>
       </div>
 
-      {/* ── Top HUD bar ── */}
+      {/* ── Top HUD bar — title (left) + buttons (right) ── */}
       <div className="fixed top-0 left-0 right-0 z-30 flex items-center justify-between px-2 md:px-4 py-1.5 md:py-3 pointer-events-none">
-        {/* Left: title + step count */}
+        {/* Left: title */}
         <div className="pointer-events-auto shrink-0">
           <div className="bg-white/85 rounded-lg px-2 md:px-4 py-1 md:py-2 backdrop-blur-sm">
             <h2
@@ -85,32 +85,6 @@ export default function HudOverlay() {
               <span className="hidden md:inline">SafSaf Love Journey</span>
               <span className="md:hidden">SafSaf</span>
             </h2>
-            <div className="flex items-center gap-1 md:gap-2">
-              <span className="font-pixel text-[10px] md:text-sm text-purple-600">
-                {discoveredCount}/5
-              </span>
-              {currentStep >= 5 && (
-                <span className="font-pixel text-[8px] md:text-xs text-green-600">
-                  Done!
-                </span>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Center: mobile timer (inline in top bar) */}
-        <div className="md:hidden pointer-events-none px-1">
-          <div
-            className={`bg-black/80 rounded-lg px-2.5 py-1 border ${
-              isUrgent ? "animate-pulse border-red-500" : "border-white/20"
-            }`}
-          >
-            <span
-              className="font-pixel text-lg tabular-nums"
-              style={{ color: timerColor }}
-            >
-              {formatGameTime(gameTime)}
-            </span>
           </div>
         </div>
 
@@ -144,17 +118,18 @@ export default function HudOverlay() {
         </div>
       </div>
 
-      {/* ── Step progress bar ── */}
-      <div className="fixed top-10 md:top-16 left-2 md:left-4 z-30 pointer-events-none">
-        <div className="bg-white/85 rounded-lg px-2 md:px-4 py-1.5 md:py-2.5 backdrop-blur-sm pointer-events-auto">
-          <div className="flex items-center gap-1 md:gap-1.5">
+      {/* ── Step progress: timeline on desktop, simple counter on mobile ── */}
+      {/* Desktop timeline */}
+      <div className="fixed top-16 left-4 z-30 pointer-events-none hidden md:block">
+        <div className="bg-white/85 rounded-lg px-4 py-2.5 backdrop-blur-sm pointer-events-auto">
+          <div className="flex items-center gap-1.5">
             {STEP_ORDER.map((triggerId, i) => {
               const discovered = !!discoveredTriggers[triggerId];
               const isCurrent = i === currentStep;
               return (
                 <div key={triggerId} className="flex items-center">
                   <div
-                    className={`w-5 h-5 md:w-7 md:h-7 rounded-full flex items-center justify-center text-[10px] md:text-xs font-bold border-2 transition-all font-pixel ${
+                    className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold border-2 transition-all font-pixel ${
                       discovered
                         ? "bg-pink-500 border-pink-500 text-white"
                         : isCurrent
@@ -165,12 +140,27 @@ export default function HudOverlay() {
                     {discovered ? "\u2713" : i + 1}
                   </div>
                   {i < STEP_ORDER.length - 1 && (
-                    <div className={`w-2 md:w-4 h-0.5 md:h-1 ${discovered ? "bg-pink-400" : "bg-gray-300"}`} />
+                    <div className={`w-4 h-1 ${discovered ? "bg-pink-400" : "bg-gray-300"}`} />
                   )}
                 </div>
               );
             })}
           </div>
+        </div>
+      </div>
+      {/* Mobile step counter — bottom left */}
+      <div
+        className="fixed z-30 pointer-events-none md:hidden"
+        style={{
+          bottom: "max(1rem, env(safe-area-inset-bottom, 0px) + 0.75rem)",
+          left: "0.75rem",
+        }}
+      >
+        <div className="bg-black/60 rounded-xl px-4 py-2 backdrop-blur-sm">
+          <span className="font-pixel text-3xl text-pink-400" style={{ textShadow: "0 0 8px rgba(244,114,182,0.5)" }}>
+            {discoveredCount}
+          </span>
+          <span className="font-pixel text-xl text-pink-300/70"> / 5</span>
         </div>
       </div>
 

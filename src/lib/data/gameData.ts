@@ -144,7 +144,7 @@ export const PLACES: PlaceDef[] = [
     id: "eat_shawarma",
     title: "First Time We Meet",
     date: "26 Feb 2024",
-    location: "Chef Chem Shawarma, Tangier",
+    location: "Chef Sham, Tangier",
     body: "Our first meal together... I knew right then that you were special. The shawarma was good, but your smile was better.",
     rewardItemId: "heart_big",
     sfx: "heart",

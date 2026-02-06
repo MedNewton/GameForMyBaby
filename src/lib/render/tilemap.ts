@@ -466,21 +466,16 @@ export function drawTriggerIndicator(
     }
   }
 
-  // "!" indicator bouncing
-  ctx.save();
-  ctx.font = `bold ${14 * scale}px "Pixelify Sans", monospace`;
-  ctx.textAlign = "center";
-  ctx.fillStyle = "#ec4899";
-  ctx.fillText("!", sx + sw / 2, sy - 4 * scale + Math.sin(time * 4) * 3 * scale);
-  ctx.restore();
-
-  // Arrow pointing to trigger
-  const arrowY = sy - 12 * scale + Math.sin(time * 3) * 4 * scale;
-  ctx.fillStyle = "#ec4899";
-  ctx.beginPath();
-  ctx.moveTo(sx + sw / 2, arrowY + 8 * scale);
-  ctx.lineTo(sx + sw / 2 - 4 * scale, arrowY);
-  ctx.lineTo(sx + sw / 2 + 4 * scale, arrowY);
-  ctx.closePath();
-  ctx.fill();
+  // Arrow pointing to trigger (spritesheet arrow)
+  if (arrowImg) {
+    const aSize = 10 * scale;
+    const arrowY = sy - 12 * scale + Math.sin(time * 3) * 4 * scale;
+    ctx.save();
+    ctx.globalAlpha = 0.85;
+    ctx.translate(sx + sw / 2, arrowY + aSize / 2);
+    // Arrow points down toward the frame
+    ctx.rotate(Math.PI);
+    ctx.drawImage(arrowImg, 0, 32, 16, 16, -aSize / 2, -aSize / 2, aSize, aSize);
+    ctx.restore();
+  }
 }

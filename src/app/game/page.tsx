@@ -22,7 +22,7 @@ export default function GamePage() {
   }
 
   return (
-    <div className="game-container">
+    <div className="game-container" onContextMenu={(e) => e.preventDefault()}>
       <GameCanvas />
       {!gameOver && <HudOverlay />}
       {!gameOver && <MobileControls />}

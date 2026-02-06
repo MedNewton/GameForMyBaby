@@ -36,7 +36,7 @@ Language: **English**
 Story locations (5):
 1) First eat together  
    - Date: **26 Feb 2024**
-   - Place: **Chef Chem Shawarma restaurant, Tangier**
+   - Place: **Chef Shem restaurant, Tangier**
    - Reward: **Big Heart**
    - Text: `"I met my Beauty"`
 
