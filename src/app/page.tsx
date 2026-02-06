@@ -1,65 +1,105 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import { initAudioOnce, startBgmIfAllowed } from "@/lib/audio/audio";
+import { Volume2, VolumeX } from "lucide-react";
+
+export default function IntroPage() {
+  const router = useRouter();
+  const [soundEnabled, setSoundEnabled] = useState(false);
+
+  function handleEnableSound() {
+    initAudioOnce();
+    startBgmIfAllowed();
+    setSoundEnabled(true);
+  }
+
+  function handleStart() {
+    if (!soundEnabled) {
+      initAudioOnce();
+      startBgmIfAllowed();
+    }
+    router.push("/game");
+  }
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <div className="relative w-screen h-dvh overflow-hidden flex items-center justify-center">
+      {/* Background image */}
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: "url('/assets/images/introBG2.png')" }}
+      />
+
+      {/* Gradient overlay for readability */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-pink-200/20 to-pink-300/40" />
+
+      {/* Content */}
+      <motion.div
+        className="relative z-10 flex flex-col items-center gap-6 px-4"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+      >
+        {/* Title */}
+        <motion.h1
+          className="text-white text-center leading-tight"
+          style={{
+            fontFamily: "var(--font-blum)",
+            fontSize: "clamp(4rem, 12vw, 8rem)",
+            textShadow: "0 3px 16px rgba(236,72,153,0.5), 0 1px 4px rgba(0,0,0,0.3)",
+            letterSpacing: "0.04em",
+          }}
+          animate={{ y: [0, -4, 0] }}
+          transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+        >
+          Beauty<br />Adventure
+        </motion.h1>
+
+        {/* Buttons */}
+        <motion.div
+          className="flex flex-col items-center gap-4 mt-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.9 }}
+        >
+          {/* Sound button */}
+          <button
+            onClick={handleEnableSound}
+            className="pixel-btn flex items-center gap-2"
+            style={{
+              background: soundEnabled ? "#86efac" : "#f9a8d4",
+              color: "#4a2040",
+              fontSize: "1.2rem",
+            }}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            {soundEnabled ? (
+              <>
+                <Volume2 size={22} /> Sound On
+              </>
+            ) : (
+              <>
+                <VolumeX size={22} /> Enable Sound
+              </>
+            )}
+          </button>
+
+          {/* Start button */}
+          <button
+            onClick={handleStart}
+            className="pixel-btn"
+            style={{
+              background: "#c084fc",
+              color: "#fff",
+              fontSize: "1.6rem",
+              padding: "18px 40px",
+            }}
           >
-            Documentation
-          </a>
-        </div>
-      </main>
+            Start Adventure
+          </button>
+        </motion.div>
+      </motion.div>
     </div>
   );
 }
