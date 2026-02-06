@@ -54,7 +54,7 @@ export default function IntroPage() {
           animate={{ y: [0, -4, 0] }}
           transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
         >
-          Beauty<br />Adventure
+          Beaty<br />Adventure
         </motion.h1>
 
         {/* Buttons */}
