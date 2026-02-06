@@ -38,23 +38,23 @@ export default function TriggerModal({ triggerId }: { triggerId: string }) {
           <div className="sm:w-1/2 w-full px-4 py-3 sm:p-6 flex flex-col justify-center shrink-0">
             {/* Date badge */}
             {place.date && (
-              <div className="inline-flex items-center gap-1.5 bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-xs sm:text-sm mb-2 sm:mb-4 w-fit font-pixel">
+              <div className="inline-flex items-center gap-1.5 bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm mb-2 sm:mb-4 w-fit font-pixel">
                 <span>{"\u{1F4C5}"}</span>
                 <span className="font-semibold">{place.date}</span>
               </div>
             )}
 
             {/* Title */}
-            <h2 className="font-pixel text-pink-700 text-base sm:text-xl mb-1.5 sm:mb-3">{place.title}</h2>
+            <h2 className="font-pixel text-pink-700 text-lg sm:text-xl mb-1.5 sm:mb-3">{place.title}</h2>
 
             {/* Location */}
-            <p className="text-xs sm:text-base text-gray-500 mb-2 sm:mb-4 flex items-center gap-1.5 font-pixel">
+            <p className="text-sm sm:text-base text-gray-500 mb-2 sm:mb-4 flex items-center gap-1.5 font-pixel">
               <span>{"\u{1F4CD}"}</span>
               {place.location}
             </p>
 
             {/* Body */}
-            <p className="text-xs sm:text-base text-gray-700 leading-relaxed mb-3 sm:mb-5"
+            <p className="text-sm sm:text-base text-gray-700 leading-relaxed mb-3 sm:mb-5"
               style={{ fontFamily: "var(--font-body)" }}
             >
               {place.body}
@@ -63,7 +63,7 @@ export default function TriggerModal({ triggerId }: { triggerId: string }) {
             {/* Reward badge */}
             <div className="flex items-center gap-2 sm:gap-3 bg-pink-50 p-2 sm:p-3 rounded-lg mb-3 sm:mb-5">
               <img src="/assets/emojis/E58.png" alt="" width={24} height={24} style={{ imageRendering: "pixelated" }} className="inline-block" draggable={false} />
-              <span className="text-xs sm:text-base text-pink-700 font-pixel">
+              <span className="text-sm sm:text-base text-pink-700 font-pixel">
                 <strong>{reward.label}</strong> unlocked!
               </span>
             </div>

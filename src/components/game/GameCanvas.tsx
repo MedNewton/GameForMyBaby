@@ -194,8 +194,8 @@ export default function GameCanvas() {
         startBgmIfAllowed();
       }
 
-      // -- Update timer (always ticks unless game over) --
-      if (!gameOver && g.firstGesture) {
+      // -- Update timer (pauses during modals and game over) --
+      if (!gameOver && !modal && g.firstGesture) {
         g.elapsedTime += clampedDt;
 
         // Sync to store every ~0.5 seconds
