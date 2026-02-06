@@ -53,8 +53,8 @@ export default function HudOverlay() {
 
   return (
     <>
-      {/* Timer display - prominent at top center */}
-      <div className="fixed top-3 left-1/2 -translate-x-1/2 z-30 pointer-events-none">
+      {/* ── Desktop timer (large, centered) ── */}
+      <div className="fixed top-3 left-1/2 -translate-x-1/2 z-30 pointer-events-none hidden md:block">
         <div
           className={`bg-black/80 rounded-xl px-6 py-3 backdrop-blur-sm border-2 ${
             isUrgent ? "animate-pulse border-red-500" : "border-white/20"
@@ -73,71 +73,88 @@ export default function HudOverlay() {
         </div>
       </div>
 
-      {/* Top HUD bar */}
-      <div className="fixed top-0 left-0 right-0 z-30 flex items-center justify-between px-4 py-3 pointer-events-none">
-        {/* Left: title + step info */}
-        <div className="flex items-center gap-3 pointer-events-auto">
-          <div className="bg-white/85 rounded-lg px-4 py-2 backdrop-blur-sm">
+      {/* ── Top HUD bar ── */}
+      <div className="fixed top-0 left-0 right-0 z-30 flex items-center justify-between px-2 md:px-4 py-1.5 md:py-3 pointer-events-none">
+        {/* Left: title + step count */}
+        <div className="pointer-events-auto shrink-0">
+          <div className="bg-white/85 rounded-lg px-2 md:px-4 py-1 md:py-2 backdrop-blur-sm">
             <h2
-              className="font-pixel text-pink-700 text-base"
+              className="font-pixel text-pink-700 text-[10px] md:text-base leading-tight"
               style={{ textShadow: "1px 1px 0 #fff" }}
             >
-              SafSaf Love Journey
+              <span className="hidden md:inline">SafSaf Love Journey</span>
+              <span className="md:hidden">SafSaf</span>
             </h2>
-            <div className="flex items-center gap-2 mt-1">
-              <span className="font-pixel text-sm text-purple-600">
+            <div className="flex items-center gap-1 md:gap-2">
+              <span className="font-pixel text-[10px] md:text-sm text-purple-600">
                 {discoveredCount}/5
               </span>
               {currentStep >= 5 && (
-                <span className="font-pixel text-xs text-green-600">
-                  All done!
+                <span className="font-pixel text-[8px] md:text-xs text-green-600">
+                  Done!
                 </span>
               )}
             </div>
           </div>
         </div>
 
+        {/* Center: mobile timer (inline in top bar) */}
+        <div className="md:hidden pointer-events-none px-1">
+          <div
+            className={`bg-black/80 rounded-lg px-2.5 py-1 border ${
+              isUrgent ? "animate-pulse border-red-500" : "border-white/20"
+            }`}
+          >
+            <span
+              className="font-pixel text-lg tabular-nums"
+              style={{ color: timerColor }}
+            >
+              {formatGameTime(gameTime)}
+            </span>
+          </div>
+        </div>
+
         {/* Right: controls */}
-        <div className="flex items-center gap-2 pointer-events-auto">
+        <div className="flex items-center gap-1 md:gap-2 pointer-events-auto shrink-0">
           <button
             onClick={() => toggleInventoryStore()}
-            className="p-2 md:p-3 rounded-lg bg-white/85 hover:bg-white transition-colors backdrop-blur-sm"
+            className="p-1.5 md:p-3 rounded-lg bg-white/85 hover:bg-white transition-colors backdrop-blur-sm"
             title="Inventory"
           >
-            <Backpack size={20} className="text-pink-700 md:w-6 md:h-6" />
+            <Backpack size={16} className="text-pink-700 md:w-6 md:h-6" />
           </button>
           <button
             onClick={handleMute}
-            className="p-2 md:p-3 rounded-lg bg-white/85 hover:bg-white transition-colors backdrop-blur-sm"
+            className="p-1.5 md:p-3 rounded-lg bg-white/85 hover:bg-white transition-colors backdrop-blur-sm"
             title={muted ? "Unmute" : "Mute"}
           >
             {muted ? (
-              <VolumeX size={20} className="text-gray-500 md:w-6 md:h-6" />
+              <VolumeX size={16} className="text-gray-500 md:w-6 md:h-6" />
             ) : (
-              <Volume2 size={20} className="text-pink-700 md:w-6 md:h-6" />
+              <Volume2 size={16} className="text-pink-700 md:w-6 md:h-6" />
             )}
           </button>
           <button
             onClick={handleBgm}
-            className="p-2 md:p-3 rounded-lg bg-white/85 hover:bg-white transition-colors backdrop-blur-sm"
+            className="p-1.5 md:p-3 rounded-lg bg-white/85 hover:bg-white transition-colors backdrop-blur-sm"
             title={bgm ? "Music Off" : "Music On"}
           >
-            <Music size={20} className={`md:w-6 md:h-6 ${bgm ? "text-purple-600" : "text-gray-400"}`} />
+            <Music size={16} className={`md:w-6 md:h-6 ${bgm ? "text-purple-600" : "text-gray-400"}`} />
           </button>
         </div>
       </div>
 
-      {/* Step progress bar */}
-      <div className="fixed top-16 left-4 z-30 pointer-events-none">
-        <div className="bg-white/85 rounded-lg px-4 py-2.5 backdrop-blur-sm pointer-events-auto">
-          <div className="flex items-center gap-1.5">
+      {/* ── Step progress bar ── */}
+      <div className="fixed top-10 md:top-16 left-2 md:left-4 z-30 pointer-events-none">
+        <div className="bg-white/85 rounded-lg px-2 md:px-4 py-1.5 md:py-2.5 backdrop-blur-sm pointer-events-auto">
+          <div className="flex items-center gap-1 md:gap-1.5">
             {STEP_ORDER.map((triggerId, i) => {
               const discovered = !!discoveredTriggers[triggerId];
               const isCurrent = i === currentStep;
               return (
                 <div key={triggerId} className="flex items-center">
                   <div
-                    className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold border-2 transition-all font-pixel ${
+                    className={`w-5 h-5 md:w-7 md:h-7 rounded-full flex items-center justify-center text-[10px] md:text-xs font-bold border-2 transition-all font-pixel ${
                       discovered
                         ? "bg-pink-500 border-pink-500 text-white"
                         : isCurrent
@@ -148,7 +165,7 @@ export default function HudOverlay() {
                     {discovered ? "\u2713" : i + 1}
                   </div>
                   {i < STEP_ORDER.length - 1 && (
-                    <div className={`w-4 h-1 ${discovered ? "bg-pink-400" : "bg-gray-300"}`} />
+                    <div className={`w-2 md:w-4 h-0.5 md:h-1 ${discovered ? "bg-pink-400" : "bg-gray-300"}`} />
                   )}
                 </div>
               );
@@ -164,39 +181,39 @@ export default function HudOverlay() {
         </p>
       </div>
 
-      {/* Inventory panel */}
+      {/* ── Inventory panel ── */}
       <AnimatePresence>
         {showInventory && (
           <motion.div
-            className="fixed top-20 right-4 z-40 bg-white/95 rounded-lg shadow-lg border-2 border-pink-300 p-5 w-72 backdrop-blur-sm"
+            className="fixed top-16 md:top-20 right-2 md:right-4 z-40 bg-white/95 rounded-lg shadow-lg border-2 border-pink-300 p-3 md:p-5 w-[calc(100vw-1rem)] max-w-72 backdrop-blur-sm"
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 50 }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
           >
-            <h3 className="font-pixel text-base text-pink-700 mb-4">Inventory</h3>
-            <div className="flex flex-col gap-3">
+            <h3 className="font-pixel text-sm md:text-base text-pink-700 mb-3 md:mb-4">Inventory</h3>
+            <div className="flex flex-col gap-2 md:gap-3">
               {ALL_ITEMS.map((id) => {
                 const item = ITEMS[id];
                 const collected = !!inventory[id];
                 return (
                   <div
                     key={id}
-                    className={`flex items-center gap-3 p-3 rounded-lg transition-all ${
+                    className={`flex items-center gap-2 md:gap-3 p-2 md:p-3 rounded-lg transition-all ${
                       collected ? "bg-pink-50 border border-pink-200" : "bg-gray-100 opacity-50"
                     }`}
                   >
-                    <span className="text-2xl">
+                    <span className="text-xl md:text-2xl">
                       {item.icon.type === "emoji"
                         ? item.icon.emoji
                         : collected
                           ? "\u2764\uFE0F"
                           : "\u2753"}
                     </span>
-                    <span className="text-base font-pixel">
+                    <span className="text-sm md:text-base font-pixel">
                       {collected ? item.label : "???"}
                     </span>
-                    {collected && <span className="ml-auto text-green-500 text-lg">{"\u2713"}</span>}
+                    {collected && <span className="ml-auto text-green-500 text-base md:text-lg">{"\u2713"}</span>}
                   </div>
                 );
               })}

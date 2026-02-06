@@ -3,12 +3,7 @@
 import { useCallback, useRef } from "react";
 import { virtualKeys } from "@/lib/input/virtualKeys";
 
-const BTN = 56; // button size in px
 const SPRITE = 16; // original sprite size
-const SCALE = BTN / SPRITE; // 3.5x
-// Full spritesheet: 10 cols x 6 rows = 160x96 original
-const SHEET_W = 160 * SCALE; // 560
-const SHEET_H = 96 * SCALE; // 336
 
 // Pink theme (row 2, y=32) arrow icons from UI_buttons16x16.png
 const DIRS = [
@@ -33,16 +28,30 @@ export default function MobileControls() {
     virtualKeys.delete(key);
   }, []);
 
+  // Responsive button size: 44px on small phones, up to 56px on larger phones
+  const btn = typeof window !== "undefined"
+    ? Math.max(44, Math.min(56, Math.floor(window.innerWidth * 0.13)))
+    : 48;
+  const scale = btn / SPRITE;
+  const sheetW = 160 * scale;
+  const sheetH = 96 * scale;
+
   return (
     <div
-      className="fixed bottom-6 left-6 z-40 md:hidden select-none"
-      style={{ touchAction: "none", opacity: 0.85 }}
+      className="fixed z-40 md:hidden select-none"
+      style={{
+        touchAction: "none",
+        opacity: 0.85,
+        bottom: "max(1rem, env(safe-area-inset-bottom, 0px) + 0.75rem)",
+        left: "0.75rem",
+      }}
     >
       <div
-        className="grid gap-1"
+        className="grid"
         style={{
-          gridTemplateColumns: `repeat(3, ${BTN}px)`,
-          gridTemplateRows: `repeat(3, ${BTN}px)`,
+          gridTemplateColumns: `repeat(3, ${btn}px)`,
+          gridTemplateRows: `repeat(3, ${btn}px)`,
+          gap: "2px",
         }}
       >
         {DIRS.map(({ key, srcX, srcY, col, row }) => (
@@ -56,11 +65,11 @@ export default function MobileControls() {
             style={{
               gridColumn: col,
               gridRow: row,
-              width: BTN,
-              height: BTN,
+              width: btn,
+              height: btn,
               backgroundImage: "url('/assets/keys/UI_buttons16x16.png')",
-              backgroundSize: `${SHEET_W}px ${SHEET_H}px`,
-              backgroundPosition: `-${srcX * SCALE}px -${srcY * SCALE}px`,
+              backgroundSize: `${sheetW}px ${sheetH}px`,
+              backgroundPosition: `-${srcX * scale}px -${srcY * scale}px`,
               backgroundRepeat: "no-repeat",
               imageRendering: "pixelated",
               touchAction: "none",
